@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- ============================================================
+         Spring Boot Parent
+         Nota: se fija una versión estable; las vulnerabilidades del
+         proyecto se introducen a propósito en el CÓDIGO y en
+         dependencias EXTRA declaradas más abajo (ver sección
+         "DEPENDENCIAS INTENCIONALMENTE VULNERABLES"), no en el
+         framework base.
+    ============================================================= -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.5</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>com.tienda</groupId>
+    <artifactId>tienda-insegura</artifactId>
+    <version>1.0.0-VULNERABLE</version>
+    <name>tienda-insegura</name>
+    <description>
+        Version 1 (VULNERABLE) - Proyecto academico OWASP Top 10:2025.
+        Aplicacion de tienda online con las 10 categorias de
+        vulnerabilidad implementadas a proposito con fines de
+        aprendizaje y pruebas de penetracion controladas.
+    </description>
+    <packaging>jar</packaging>
+
+    <properties>
+        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Version de dependencia vulnerable fijada a proposito para A03 -->
+        <log4j-core.vulnerable.version>2.14.1</log4j-core.vulnerable.version>
+    </properties>
+
+    <dependencies>
+
+        <!-- ==========================================================
+             WEB / API REST
+             El frontend ahora vive separado en /frontend (HTML+CSS+JS
+             plano) y consume esta API via fetch(). Por eso NO se
+             incluye motor de vistas (thymeleaf): los controllers
+             devuelven JSON (@RestController).
+        =========================================================== -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- ==========================================================
+             PERSISTENCIA
+             - JPA para entidades "normales"
+             - JDBC "puro" a proposito para la capa de busqueda de
+               productos, donde se construye SQL por concatenacion
+               de strings (vector real de SQL Injection - A05)
+        =========================================================== -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- ==========================================================
+             VALIDACION - se incluye pero NO se usara correctamente
+             en v1 (formularios sin @Valid / sin sanitizacion real)
+        =========================================================== -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <!-- ==========================================================
+             ACTUATOR - se expone deliberadamente sin autenticacion
+             y con endpoints sensibles habilitados (A02: Security
+             Misconfiguration). Ver ActuatorConfig / application.properties
+        =========================================================== -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <!-- ==========================================================
+             SESIONES / AUTENTICACION
+             NO se agrega spring-boot-starter-security en v1: la
+             autenticacion se implementa "a mano" (sesiones propias,
+             JWT casero, etc.) para poder demostrar A07 Authentication
+             Failures de forma realista sin que Spring Security lo
+             bloquee por defecto.
+        =========================================================== -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>0.11.5</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>0.11.5</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>0.11.5</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- ==========================================================
+             DEPENDENCIAS INTENCIONALMENTE VULNERABLES (A03:2025
+             Software Supply Chain Failures)
+             Se fijan versiones antiguas y conocidas por CVEs
+             publicos para poder detectarlas con OWASP Dependency-Check
+             / Dependency-Track / `mvn dependency-check:check` y luego
+             corregirlas en la v2 saneada.
+        =========================================================== -->
+
+        <!-- CVE-2021-44228 / CVE-2021-45046 (Log4Shell) -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j-core.vulnerable.version}</version>
+        </dependency>
+
+        <!-- Nota de coherencia:
+             No se incluye jackson-databind 2.9.x porque es incompatible con
+             Spring Boot 3 y evitaria que el laboratorio arranque. La practica
+             A03 se demuestra con log4j-core 2.14.1 y Dependency-Check. -->
+
+        <!-- ==========================================================
+             UTILIDADES
+        =========================================================== -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- ==========================================================
+             TESTING
+        =========================================================== -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <finalName>tienda-insegura</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+            <!-- Plugin para escanear dependencias vulnerables
+                 (uso previsto en la fase de pentesting/documentacion:
+                 mvn org.owasp:dependency-check-maven:check) -->
+            <plugin>
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
+                <version>9.2.0</version>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

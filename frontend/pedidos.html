@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mis Pedidos — Tienda Insegura</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container navbar__inner">
+      <a href="index.html" class="navbar__brand">
+        <span class="navbar__logo">⚡</span>
+        Tienda Insegura
+      </a>
+      <ul class="navbar__links">
+        <li><a href="index.html" class="navbar__link">Catálogo</a></li>
+        <li><a href="pedidos.html" class="navbar__link navbar__link--active">Mis Pedidos</a></li>
+        <li><a href="admin.html" class="navbar__link" id="nav-admin" style="display:none">Admin</a></li>
+      </ul>
+      <div class="navbar__actions">
+        <a href="carrito.html" class="cart-btn">🛒<span class="cart-badge" id="cart-badge">0</span></a>
+        <div id="nav-auth"></div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container section">
+    <div class="section__header">
+      <h1 class="section__title heading-serif">Mis pedidos</h1>
+    </div>
+
+    <div class="alert alert--info">
+      <span>ℹ️</span>
+      <span>Prueba de IDOR: intenta acceder a pedidos ajenos cambiando el ID en la URL → <code>pedido.html?id=1</code></span>
+    </div>
+
+    <div class="orders-list" id="orders-list">
+      <div class="spinner"></div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__bottom">
+      © 2026 Tienda Insegura — Proyecto académico OWASP Top 10:2025
+    </div>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/pages/pedidos.js"></script>
+</body>
+</html>

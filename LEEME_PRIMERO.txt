@@ -1,0 +1,47 @@
+TIENDA INSEGURA v1 - LABORATORIO OWASP
+========================================
+
+ADVERTENCIA
+-----------
+Esta aplicación contiene vulnerabilidades reales a propósito.
+Ejecutar únicamente en localhost o en una VM/red de laboratorio autorizada.
+No exponer a Internet.
+
+INICIO RÁPIDO
+-------------
+1. Abrir una terminal en esta carpeta.
+2. Ejecutar:
+
+   docker compose --profile full up -d --build
+
+3. Abrir:
+
+   http://127.0.0.1:3000
+
+4. Verificar:
+
+   scripts\verificar-laboratorio.ps1   (Windows PowerShell)
+   scripts/verificar-laboratorio.sh      (Linux/WSL/macOS)
+
+DOCUMENTACIÓN
+-------------
+- README.md
+- docs/guia-despliegue.md
+- docs/pruebas-pentesting.md
+- pentesting/sqlmap/GUIA.md
+- Informe_Tecnico_Tienda_Insegura_v1.docx
+
+CREDENCIALES DE LABORATORIO
+---------------------------
+admin / admin123
+jperez / password1
+mgarcia / qwerty123
+
+SQLMAP
+------
+Windows:
+  .\pentesting\sqlmap\run-sqlmap.ps1
+
+Linux/WSL/macOS:
+  bash pentesting/sqlmap/run-sqlmap.sh
+

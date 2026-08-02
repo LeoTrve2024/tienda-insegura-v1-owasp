@@ -1,0 +1,24 @@
+VALIDACIÓN ESTÁTICA - TIENDA INSEGURA V1
+Fecha: 2026-08-01
+
+[PASS] 65 comprobaciones estáticas sin errores.
+[PASS] docker-compose.yml es YAML válido.
+[PASS] Puertos publicados en 127.0.0.1 y red Docker interna.
+[PASS] 30 archivos Java con balance básico de llaves.
+[PASS] 13 archivos JavaScript pasan node --check.
+[PASS] 2 scripts Bash pasan bash -n.
+[PASS] Referencias locales de 8 páginas HTML sin faltantes.
+[PASS] pom.xml y placeholder.svg son XML válido.
+[PASS] Informe DOCX abre correctamente.
+[PASS] init.sql y backup-v1.sql contienen estructura y datos.
+[PASS] Sin archivos vacíos inesperados.
+[PASS] backend/target y Maven Wrapper vacío eliminados.
+[PASS] Enlaces del README válidos.
+
+PENDIENTE EN EL EQUIPO DEL ESTUDIANTE:
+- Compilar/levantar con Docker Compose.
+- Ejecutar scripts/verificar-laboratorio.
+- Ejecutar sqlmap y guardar la evidencia real.
+- Tomar las capturas indicadas en docs/checklist-entrega-v1.md.
+
+Este entorno de preparación no dispone de Docker ni Maven con acceso a Internet, por lo que no se afirmó una prueba de ejecución que no haya sido realizada.

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tienda Insegura — Catálogo</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container navbar__inner">
+      <a href="index.html" class="navbar__brand">
+        <span class="navbar__logo">⚡</span>
+        Tienda Insegura
+      </a>
+
+      <ul class="navbar__links">
+        <li><a href="index.html" class="navbar__link navbar__link--active">Catálogo</a></li>
+        <li><a href="pedidos.html" class="navbar__link">Mis Pedidos</a></li>
+        <li><a href="admin.html" class="navbar__link" id="nav-admin" style="display:none">Admin</a></li>
+      </ul>
+
+      <div class="navbar__actions">
+        <a href="carrito.html" class="cart-btn" aria-label="Carrito">
+          🛒
+          <span class="cart-badge" id="cart-badge">0</span>
+        </a>
+        <div id="nav-auth"></div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero__content">
+      <div class="hero__badge">
+        <span class="lab-badge">Lab v1</span>
+        OWASP Top 10 — Entorno de práctica
+      </div>
+      <h1 class="hero__title heading-serif">Descubre productos<br>sin límites</h1>
+      <p class="hero__subtitle">
+        Tu tienda online de confianza. Explora nuestro catálogo y encuentra lo que necesitas.
+      </p>
+      <div class="hero__search">
+        <input type="search" id="search-input" class="form-input" placeholder="Buscar productos..." autocomplete="off">
+        <button class="btn btn--primary" id="search-btn">Buscar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Products -->
+  <section class="section">
+    <div class="container">
+      <div class="section__header">
+        <h2 class="section__title heading-serif" id="section-title">Todos los productos</h2>
+        <span class="text-muted text-sm" id="product-count"></span>
+      </div>
+      <div class="product-grid" id="product-grid">
+        <div class="spinner"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div>
+        <div class="footer__brand">Tienda Insegura</div>
+        <p class="footer__desc">
+          Proyecto académico de Seguridad Informática. Versión 1 intencionalmente vulnerable para prácticas de pentesting controlado.
+        </p>
+      </div>
+      <div>
+        <div class="footer__heading">Navegación</div>
+        <ul class="footer__links">
+          <li><a href="index.html">Catálogo</a></li>
+          <li><a href="carrito.html">Carrito</a></li>
+          <li><a href="pedidos.html">Mis Pedidos</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer__heading">Cuenta</div>
+        <ul class="footer__links">
+          <li><a href="login.html">Ingresar</a></li>
+          <li><a href="registro.html">Registrarse</a></li>
+          <li><a href="admin.html">Panel Admin</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container footer__bottom">
+      © 2026 Tienda Insegura — Proyecto académico OWASP Top 10:2025
+    </div>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/pages/home.js"></script>
+</body>
+</html>

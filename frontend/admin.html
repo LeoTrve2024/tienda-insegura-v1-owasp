@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Admin — Tienda Insegura</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container navbar__inner">
+      <a href="index.html" class="navbar__brand">
+        <span class="navbar__logo">⚡</span>
+        Tienda Insegura
+      </a>
+      <ul class="navbar__links">
+        <li><a href="index.html" class="navbar__link">Catálogo</a></li>
+        <li><a href="admin.html" class="navbar__link navbar__link--active">Admin</a></li>
+      </ul>
+      <div class="navbar__actions">
+        <div id="nav-auth"></div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="alert alert--warning" style="margin-top:2rem">
+      <span>⚠️</span>
+      <div>
+        <strong>Panel de administración — Laboratorio de pentesting</strong><br>
+        Este panel demuestra vulnerabilidades A01 (Broken Access Control), A04 (passwords en texto plano),
+        A05 (OS Command Injection en ping) y A08 (upload sin restricciones).
+      </div>
+    </div>
+
+    <div class="admin-layout">
+      <aside class="admin-sidebar">
+        <div class="admin-sidebar__title">Secciones</div>
+        <ul class="admin-nav">
+          <li><a class="admin-nav__link admin-nav__link--active" data-panel="usuarios">👥 Usuarios</a></li>
+          <li><a class="admin-nav__link" data-panel="pedidos">📦 Pedidos</a></li>
+          <li><a class="admin-nav__link" data-panel="diagnostico">🔧 Diagnóstico (ping)</a></li>
+          <li><a class="admin-nav__link" data-panel="upload">📁 Subir imagen</a></li>
+        </ul>
+      </aside>
+
+      <div id="admin-content">
+        <div class="spinner"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__bottom">
+      © 2026 Tienda Insegura — Proyecto académico OWASP Top 10:2025
+    </div>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/pages/admin.js"></script>
+</body>
+</html>

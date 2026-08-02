@@ -1,0 +1,100 @@
+# ============================================================
+# TIENDA INSEGURA v1 — LABORATORIO LOCAL INTENCIONALMENTE VULNERABLE
+# ============================================================
+# ADVERTENCIA:
+# - Ejecutar únicamente en localhost, VM o equipo de laboratorio aislado.
+# - Los puertos se enlazan por defecto a 127.0.0.1 para evitar exposición
+#   accidental a la red local o a Internet.
+# - No cambiar BIND_ADDRESS a 0.0.0.0 salvo que exista una red de laboratorio
+#   aislada y autorización expresa.
+#
+# Uso:
+#   docker compose --profile full up -d --build
+#   docker compose --profile full down
+# ============================================================
+
+name: tienda-insegura-v1
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: tienda_v1_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-tienda_insegura}
+      POSTGRES_USER: ${POSTGRES_USER:-tienda_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-tienda_pass_123}
+    ports:
+      - "${BIND_ADDRESS:-127.0.0.1}:${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/src/main/resources/db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      - ./backend/src/main/resources/db/data.sql:/docker-entrypoint-initdb.d/02-data.sql:ro
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER:-tienda_user} -d ${POSTGRES_DB:-tienda_insegura}"
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    networks:
+      - laboratorio
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: tienda_v1_backend
+    restart: unless-stopped
+    ports:
+      - "${BIND_ADDRESS:-127.0.0.1}:${BACKEND_PORT:-8080}:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-tienda_insegura}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-tienda_user}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-tienda_pass_123}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "wget -qO- http://127.0.0.1:8080/actuator/health | grep -q 'UP'"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 18
+      start_period: 30s
+    networks:
+      - laboratorio
+    profiles:
+      - full
+
+  frontend:
+    image: nginx:1.27-alpine
+    container_name: tienda_v1_frontend
+    restart: unless-stopped
+    ports:
+      - "${BIND_ADDRESS:-127.0.0.1}:${FRONTEND_PORT:-3000}:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - laboratorio
+    profiles:
+      - full
+
+volumes:
+  postgres_data:
+    name: tienda_insegura_v1_postgres_data
+
+networks:
+  laboratorio:
+    name: tienda_insegura_v1_lab
+    driver: bridge
+    internal: true
